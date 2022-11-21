@@ -18,7 +18,7 @@
 // console.log(scores[0]);
 
 // változó deklarálás
-let scores, roundScore, activePlayer;
+let scores, roundScore, activePlayer, previousDices;
 
 function newGame() {
   // a játékosok pontszámai, mindkét játákos null ponttal indul
@@ -30,6 +30,9 @@ function newGame() {
 
   // az első játékos kezd
   activePlayer = 0;
+
+  // az utolsó dobás értéke
+  previousDices = [0];
 
   // dom manipuláció (dom: document object model = HTML kód)
 
@@ -68,6 +71,9 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // 1. generálunk egy véletlen számot, 1-6 között
   const dice = Math.floor(Math.random() * 6) + 1;
 
+  //eltárolom a dobott számokat
+  previousDices.push(dice);
+
   // 2. jelenítsük meg az eredményt a UI-on:
   document.querySelector(".dice").style.display = "block";
   // template string
@@ -78,14 +84,21 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // string concatenation
   // document.querySelector('.dice').setAttribute('src', 'dice-'+dice+'.png');
 
+  console.log(previousDices);
+  let sc = previousDices.slice(-1);
+
   // ha nem 1 a dobott érték akkor felírjuk a pontszámot, és ugyanaz a játékos dobhat újra
   // elágazás:
-  if (dice !== 1) {
+  if (dice == 6 && sc == 6) {
+    previousDices = [0];
+    nextPlayer();
+  } else if (dice !== 1) {
     roundScore = roundScore + dice;
     // a UI-on megjelenítjük az eredményt:
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
   } else {
     // ha a dobott érték 1, akkor a pontok elvesznek és a következő játékos jön
+    previousDices = [0];
     nextPlayer();
   }
 });
