@@ -31,8 +31,8 @@ function newGame() {
   // az első játékos kezd
   activePlayer = 0;
 
-  // az utolsó dobás értéke
-  previousDices = [0];
+  // korábbi dobások
+  previousDices = [0, 0];
 
   // dom manipuláció (dom: document object model = HTML kód)
 
@@ -71,8 +71,11 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // 1. generálunk egy véletlen számot, 1-6 között
   const dice = Math.floor(Math.random() * 6) + 1;
 
-  //eltárolom a dobott számokat
-  previousDices.push(dice);
+  
+  console.log("----- new roll! -----");
+  console.log("player" + activePlayer + " is the active player");
+  console.log("previousDice of player" + activePlayer +" is " + previousDices[activePlayer]);
+  console.log('actual dice of player' + activePlayer + ' is ' + dice + '!')
 
   // 2. jelenítsük meg az eredményt a UI-on:
   document.querySelector(".dice").style.display = "block";
@@ -82,23 +85,27 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // szekvencia: a program az utasításokat sorról sorra hatja végre
 
   // string concatenation
+
   // document.querySelector('.dice').setAttribute('src', 'dice-'+dice+'.png');
 
-  console.log(previousDices);
-  let sc = previousDices.slice(-1);
+  if (dice == 6 && previousDices[activePlayer] == 6) {
+    previousDices[activePlayer] = 0;
+    console.log('DOUBLE SIX!!!');
+    scores[activePlayer] = 0;
+    roundScore = 0;
+    nextPlayer();
+  }
 
   // ha nem 1 a dobott érték akkor felírjuk a pontszámot, és ugyanaz a játékos dobhat újra
   // elágazás:
-  if (dice == 6 && sc == 6) {
-    previousDices = [0];
-    nextPlayer();
-  } else if (dice !== 1) {
+  if (dice !== 1) {
     roundScore = roundScore + dice;
+    previousDices[activePlayer] = dice;
     // a UI-on megjelenítjük az eredményt:
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
   } else {
     // ha a dobott érték 1, akkor a pontok elvesznek és a következő játékos jön
-    previousDices = [0];
+    previousDices[activePlayer] = 0;
     nextPlayer();
   }
 });
