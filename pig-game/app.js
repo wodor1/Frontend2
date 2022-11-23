@@ -71,11 +71,15 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // 1. generálunk egy véletlen számot, 1-6 között
   const dice = Math.floor(Math.random() * 6) + 1;
 
-  
   console.log("----- new roll! -----");
   console.log("PLAYER" + activePlayer);
-  console.log("previous dice of player" + activePlayer + ": " + previousDices[activePlayer]);
-  console.log('current dice of player' + activePlayer + ': ' + dice);
+  console.log(
+    "previous dice of player" +
+      activePlayer +
+      ": " +
+      previousDices[activePlayer]
+  );
+  console.log("current dice of player" + activePlayer + ": " + dice);
 
   // 2. jelenítsük meg az eredményt a UI-on:
   document.querySelector(".dice").style.display = "block";
@@ -89,12 +93,11 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // document.querySelector('.dice').setAttribute('src', 'dice-'+dice+'.png');
 
   if (dice == 6 && previousDices[activePlayer] == 6) {
-    scores[activePlayer] = 0;
     previousDices[activePlayer] = 0;
-    document.querySelector("#current-" + activePlayer).textContent = 0;
-    console.log('player' + activePlayer + 'rolled two 6');
+    scores[activePlayer] = 0;
+    console.log("player" + activePlayer + " rolled two 6");
+    console.log("it is player" + activePlayer + "'s turn now");
     nextPlayer();
-    console.log('it is player' + activePlayer + "'s turn now");
   } else {
     previousDices[activePlayer] = dice;
   }
@@ -103,14 +106,12 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // elágazás:
   if (dice !== 1) {
     roundScore = roundScore + dice;
-    previousDices[activePlayer] = dice;
     // a UI-on megjelenítjük az eredményt:
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
   } else {
     // ha a dobott érték 1, akkor a pontok elvesznek és a következő játékos jön
-    previousDices[activePlayer] = 0;
     nextPlayer();
-    console.log('it is player' + activePlayer + "'s turn now");
+    console.log("it is player" + activePlayer + "'s turn now");
   }
 });
 
@@ -132,7 +133,7 @@ function nextPlayer() {
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
   // 1. a játékos megszerzi a kör alatt szerzett pontjait
-  console.log('player' + activePlayer + ' holds');
+  console.log("player" + activePlayer + " holds");
   scores[activePlayer] = scores[activePlayer] + roundScore;
   // scores[activePlayer] += roundScore;
 
@@ -156,7 +157,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
   } else {
     // másik játékos jön:
     nextPlayer();
-    console.log('it is player' + activePlayer + "'s turn now");
+    console.log("it is player" + activePlayer + "'s turn now");
   }
 });
 
