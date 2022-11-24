@@ -72,6 +72,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   const dice = Math.floor(Math.random() * 6) + 1;
 
   console.log("----- new roll! -----");
+  console.log(previousDices);
   console.log("PLAYER" + activePlayer);
   console.log(
     "previous dice of player" +
@@ -91,13 +92,20 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
   // string concatenation
 
   // document.querySelector('.dice').setAttribute('src', 'dice-'+dice+'.png');
-
+  console.log(previousDices);
   if (dice == 6 && previousDices[activePlayer] == 6) {
-    previousDices[activePlayer] = 0;
+    roundScore = 0;
+    document.querySelector("#current-" + activePlayer).textContent = roundScore;
+    console.log(previousDices);
     scores[activePlayer] = 0;
     console.log("player" + activePlayer + " rolled two 6");
     console.log("it is player" + activePlayer + "'s turn now");
+    console.log(activePlayer);
+    previousDices[activePlayer] = 0;
     nextPlayer();
+    console.log(activePlayer);
+    previousDices[activePlayer] = 0;
+    console.log(previousDices);
   } else {
     previousDices[activePlayer] = dice;
   }
@@ -113,6 +121,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
     nextPlayer();
     console.log("it is player" + activePlayer + "'s turn now");
   }
+  console.log(previousDices);
 });
 
 // DRY = do not repeat yourself
