@@ -18,7 +18,17 @@
 // console.log(scores[0]);
 
 // változó deklarálás
-let scores, roundScore, activePlayer, previousDices;
+let scores, roundScore, activePlayer, previousDices, finalScore;
+
+function finalScoreCheck() {
+  if (finalScore !== 100) {
+    console.log('The final score is: ' + finalScore + ' points!');
+  } else {
+    finalScore = 100;
+    console.log('The final score is: ' + finalScore + ' points!');
+  }
+}
+
 
 function newGame() {
   // a játékosok pontszámai, mindkét játákos null ponttal indul
@@ -34,11 +44,14 @@ function newGame() {
   // korábbi dobások
   previousDices = [0, 0];
 
+  finalScore = document.getElementById('fscore').value;
+  finalScoreCheck()
   // dom manipuláció (dom: document object model = HTML kód)
 
   // kiválsztjuk a score-0 id-vel rendelkező html elemet
   // és a tartalmát beállítjuk 0-ra
   document.querySelector("#score-0").textContent = 0;
+ // document.querySelector("#final-score").value = 100;
 
   // camelCase: mindenÚjSzótNagyBetűvelÍrunk // JavaScript
   // PascalCase: AzElsőBetűIsNagybetű // JavaScript
@@ -65,6 +78,7 @@ function newGame() {
 }
 
 newGame();
+
 
 // a kokca dobás, gombra kattintás
 document.querySelector(".btn-roll").addEventListener("click", function () {
@@ -99,10 +113,9 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
     document.querySelector("#score-" + activePlayer).textContent =
     scores[activePlayer];
     console.log("player" + activePlayer + " rolled two 6");
-    console.log("it is player" + activePlayer + "'s turn now");
-    console.log(activePlayer);
     previousDices[activePlayer] = 0;
     nextPlayer();
+    console.log("it is player" + activePlayer + "'s turn now");
     console.log(activePlayer);
     previousDices[activePlayer] = 0;
     return
@@ -143,6 +156,7 @@ function nextPlayer() {
 document.querySelector(".btn-hold").addEventListener("click", function () {
   // 1. a játékos megszerzi a kör alatt szerzett pontjait
   console.log("player" + activePlayer + " holds");
+  previousDices[activePlayer] = 0;
   scores[activePlayer] = scores[activePlayer] + roundScore;
   // scores[activePlayer] += roundScore;
 
@@ -151,7 +165,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     scores[activePlayer];
 
   // 3. nézzük meg hogy van e nyertes
-  if (scores[activePlayer] >= 20) {
+  if (scores[activePlayer] >= finalScore) {
     document
       .querySelector(`.player-${activePlayer}-panel`)
       .classList.add("winner");
@@ -170,4 +184,4 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
   }
 });
 
-document.querySelector(".btn-new").addEventListener("click", newGame);
+document.querySelector(".btn-new").addEventListener("click", newGame, finalScoreCheck);
