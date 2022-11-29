@@ -47,7 +47,8 @@ function newGame() {
   document.querySelector("#current-1").textContent = 0;
 
   // a játék indításakor a kocka még nem látszik:
-  document.querySelector(".dice").style.display = "none";
+  document.querySelector("#dice-1").style.display = "none";
+  document.querySelector("#dice-2").style.display = "none";
   document.querySelector(".btn-hold").style.display = "block";
   document.querySelector(".btn-roll").style.display = "block";
 
@@ -66,12 +67,14 @@ newGame();
 // a kokca dobás, gombra kattintás
 document.querySelector(".btn-roll").addEventListener("click", function () {
   // 1. generálunk egy véletlen számot, 1-6 között
-  const dice = Math.floor(Math.random() * 6) + 1;
-
+  const dice1 = Math.floor(Math.random() * 6) + 1;
+  const dice2 = Math.floor(Math.random() * 6) + 1;
   // 2. jelenítsük meg az eredményt a UI-on:
-  document.querySelector(".dice").style.display = "block";
+  document.querySelector("#dice-1").style.display = "block";
+  document.querySelector("#dice-2").style.display = "block";
   // template string
-  document.querySelector(".dice").setAttribute("src", `dice-${dice}.png`);
+  document.querySelector("#dice-1").setAttribute("src", `dice-${dice1}.png`);
+  document.querySelector("#dice-2").setAttribute("src", `dice-${dice2}.png`);
 
   // szekvencia: a program az utasításokat sorról sorra hatja végre
 
@@ -80,13 +83,13 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
 
   // ha nem 1 a dobott érték akkor felírjuk a pontszámot, és ugyanaz a játékos dobhat újra
   // elágazás:
-  if (dice !== 1) {
-    roundScore = roundScore + dice;
+  if (dice1 == 1 || dice2 == 1) {
+    nextPlayer();
+    // ha a dobott érték 1, akkor a pontok elvesznek és a következő játékos jön
+  } else {
+    roundScore = roundScore + dice1 + dice2;
     // a UI-on megjelenítjük az eredményt:
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
-  } else {
-    // ha a dobott érték 1, akkor a pontok elvesznek és a következő játékos jön
-    nextPlayer();
   }
 });
 
@@ -125,7 +128,8 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
       .classList.remove("active");
 
     document.querySelector("#name-" + activePlayer).textContent = "Winner!";
-    document.querySelector(".dice").style.display = "none";
+    document.querySelector("#dice-1").style.display = "none";
+    document.querySelector("#dice-2").style.display = "none";
     document.querySelector(".btn-hold").style.display = "none";
     document.querySelector(".btn-roll").style.display = "none";
   } else {
