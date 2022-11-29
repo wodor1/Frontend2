@@ -66,7 +66,7 @@ function newGame() {
 
 newGame();
 
-// a kokca dobás, gombra kattintás
+// a kocka dobás, gombra kattintás
 document.querySelector(".btn-roll").addEventListener("click", function () {
   // 1. generálunk egy véletlen számot, 1-6 között
   const dice = Math.floor(Math.random() * 6) + 1;
